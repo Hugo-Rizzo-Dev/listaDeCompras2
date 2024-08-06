@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products List</title>
+    <style>
+        .container {
+            width: 300px;
+            margin: 0 auto;
+            background-color: lightgreen;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .container h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .name-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .name-list li {
+            padding: 5px 0;
+            font-size: 18px;
+        }
+
+        .voltar {
+            text-decoration: none;
+            text-decoration: solid;
+            border-style: solid;
+            border-radius: 5px;
+            padding: 0.3rem;
+            font-size: 1rem;
+            color: black;
+            background-color: white;
+        }
+
+        .voltar:hover {
+            background-color: black;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Saved Products</h1>
+        <ul class="products-list" id="productsList">
+            <!-- Nomes serão inseridos aqui -->
+        </ul>
+        <a class="voltar" href="index.html">Voltar a tela Produtos</a>
+    </div>
+    <script>
+        // Recupera produtos do localStorage
+        let products = JSON.parse(localStorage.getItem('products')) || [];
+
+        // Seleciona o elemento de lista
+        const productsList = document.getElementById('productsList');
+
+        // Função para atualizar a lista na interface
+        function renderList() {
+            // Limpa a lista existente
+            productsList.innerHTML = '';
+
+            // Adiciona cada produto à lista com um botão de exclusão
+            products.forEach((product, index) => {
+                const li = document.createElement('li');
+                li.textContent = product;
+
+                // Cria um botão de exclusão
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'Excluir';
+                deleteButton.onclick = () => deleteProduct(index);
+
+                // Adiciona o produto e o botão de exclusão à lista
+                li.appendChild(deleteButton);
+                productsList.appendChild(li);
+            });
+        }
+
+        // Função para excluir um produto da lista
+        function deleteProduct(index) {
+            // Remove o produto do array
+            products.splice(index, 1);
+
+            // Atualiza o localStorage
+            localStorage.setItem('products', JSON.stringify(products));
+
+            // Re-renderiza a lista
+            renderList();
+        }
+
+        // Renderiza a lista ao carregar a página
+        renderList();
+    </script>
+</body>
+
+</html>
